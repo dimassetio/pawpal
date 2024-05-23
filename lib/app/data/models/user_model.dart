@@ -9,11 +9,10 @@ class UserModel extends Database {
   static const String UID = "UID";
   static const String ROLE = "ROLE";
   static const String USERNAME = "USERNAME";
-  static const String NAMA = "NAMA";
+  static const String PHONE = "PHONE";
   static const String EMAIL = "EMAIL";
-  static const String GENDER = "GENDER";
+  static const String BIO = "BIO";
   static const String ALAMAT = "ALAMAT";
-  static const String SEKOLAH = "SEKOLAH";
   static const String TGL_MASUK = "TGL_MASUK";
   static const String FOTO = "FOTO";
   static const String IS_ACTIVE = "IS_ACTIVE";
@@ -23,9 +22,8 @@ class UserModel extends Database {
   String? role;
   String? email;
   String? username;
-  String? nama;
-  String? gender;
-  String? sekolah;
+  String? phone;
+  String? bio;
   DateTime? tglMasuk;
   String? alamat;
   String? foto;
@@ -43,10 +41,9 @@ class UserModel extends Database {
     this.role,
     this.email,
     this.username,
-    this.nama,
-    this.sekolah,
+    this.phone,
     this.tglMasuk,
-    this.gender,
+    this.bio,
     this.alamat,
     this.foto,
     this.isActive,
@@ -65,13 +62,13 @@ class UserModel extends Database {
     role = json?[ROLE];
     email = json?[EMAIL];
     username = json?[USERNAME];
-    nama = json?[NAMA];
-    sekolah = json?[SEKOLAH];
+    phone = json?[PHONE];
     tglMasuk = (json?[TGL_MASUK] as Timestamp?)?.toDate();
-    gender = json?[GENDER];
+    bio = json?[BIO];
     alamat = json?[ALAMAT];
     foto = json?[FOTO];
     isActive = json?[IS_ACTIVE];
+    uid = json?[UID];
   }
 
   Map<String, dynamic> toJson() {
@@ -81,10 +78,9 @@ class UserModel extends Database {
       ROLE: role,
       EMAIL: email,
       USERNAME: username,
-      NAMA: nama,
-      GENDER: gender,
+      PHONE: phone,
+      BIO: bio,
       ALAMAT: alamat,
-      SEKOLAH: sekolah,
       TGL_MASUK: tglMasuk,
       FOTO: foto,
       IS_ACTIVE: isActive,

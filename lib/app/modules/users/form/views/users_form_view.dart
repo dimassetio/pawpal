@@ -73,18 +73,14 @@ class UsersFormView extends GetView<UsersFormController> {
                     16.height,
                     PPTextfield(
                       icon: Icon(Icons.person),
-                      label: "Nama Lengkap",
-                      controller: controller.fullnameC,
+                      label: "Phone",
+                      controller: controller.phoneC,
                     ),
                     16.height,
-                    PPDropdown(
-                      listValue: controller.genderList,
-                      onChanged: (value) {
-                        controller.selectedGender = value;
-                      },
-                      initValue: controller.selectedGender,
-                      label: "Gender",
-                      icon: Icon(Icons.male),
+                    PPTextfield(
+                      icon: Icon(Icons.description),
+                      label: "Bio",
+                      controller: controller.bioC,
                     ),
                     16.height,
                     PPTextfield(
@@ -97,11 +93,6 @@ class UsersFormView extends GetView<UsersFormController> {
                 16.height,
                 PPCardColumn(
                   children: [
-                    PPTextfield(
-                      icon: Icon(Icons.school),
-                      label: "Asal Sekolah",
-                      controller: controller.sekolahC,
-                    ),
                     16.height,
                     PPTextfield(
                       isReadOnly: true,

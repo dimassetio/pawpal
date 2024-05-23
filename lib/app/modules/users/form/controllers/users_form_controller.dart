@@ -16,39 +16,32 @@ class UsersFormController extends GetxController {
   set isLoading(value) => _isLoading.value = value;
 
   TextEditingController usernameC = TextEditingController();
-  TextEditingController fullnameC = TextEditingController();
+  TextEditingController phoneC = TextEditingController();
   TextEditingController emailC = TextEditingController();
   TextEditingController alamatC = TextEditingController();
-  TextEditingController sekolahC = TextEditingController();
   TextEditingController passwordC = TextEditingController();
   TextEditingController confirmPasswordC = TextEditingController();
   TextEditingController tglMasukC = TextEditingController();
+  TextEditingController bioC = TextEditingController();
 
   String? selectedRole;
   DateTime? selectedTglMasuk;
-  String? selectedGender;
   bool? isActive;
 
   var selectedPhotoPath = ''.obs;
-
-  List genderList = [
-    "Laki-Laki",
-    "Perempuan",
-  ];
 
   UserModel? editedUser;
 
   void loadController() {
     if (editedUser is UserModel) {
       usernameC.text = editedUser!.username ?? '';
-      fullnameC.text = editedUser!.nama ?? '';
+      phoneC.text = editedUser!.phone ?? '';
       emailC.text = editedUser!.email ?? '';
       alamatC.text = editedUser!.alamat ?? '';
-      sekolahC.text = editedUser!.sekolah ?? '';
+      bioC.text = editedUser!.bio ?? '';
       tglMasukC.text = dateFormatter(editedUser!.tglMasuk);
       selectedRole = editedUser!.role;
       selectedTglMasuk = editedUser!.tglMasuk;
-      selectedGender = editedUser!.gender;
       isActive = editedUser!.isActive;
     }
   }
@@ -70,13 +63,12 @@ class UsersFormController extends GetxController {
           toast("Email verification sent to ${emailC.text}");
         }
       }
-      user.nama = fullnameC.text;
+      user.phone = phoneC.text;
       user.role = selectedRole;
       user.email = emailC.text;
       user.username = usernameC.text;
-      user.sekolah = sekolahC.text;
       user.tglMasuk = selectedTglMasuk;
-      user.gender = selectedGender;
+      user.bio = bioC.text;
       user.alamat = alamatC.text;
       user.isActive = isActive;
 

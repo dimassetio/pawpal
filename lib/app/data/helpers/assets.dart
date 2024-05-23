@@ -7,6 +7,8 @@ const img_cat = "assets/image/cat.png";
 const img_dog = "assets/image/dog.png";
 const img_fish = "assets/image/fish.png";
 const img_reptile = "assets/image/reptile.png";
+const img_bird = "assets/image/bird.png";
+const img_other_pet = "assets/image/other_pet.png";
 
 // const svg_logo = "assets/svg/Logo.svg";
 

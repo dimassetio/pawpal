@@ -31,7 +31,7 @@ class AuthSignInController extends GetxController {
           Get.snackbar("Sign In Berhasil", "Selamat datang di PawPal-App");
           Get.toNamed(Routes.HOME);
         } else if (authC.user.hasRoles(
-          [Role.administrator, Role.administrator],
+          [Role.administrator],
         )) {
           Get.snackbar(
               "Sign In Berhasil", "Selamat datang PawPal administrator");

@@ -84,19 +84,17 @@ class UsersDetailView extends GetView<UsersDetailController> {
                       color: primaryColor(context),
                     ),
                     isReadOnly: true,
-                    initValue: controller.user?.nama,
+                    initValue: controller.user?.phone,
                     label: "Nama Lengkap",
                   ),
                   16.height,
                   PPTextfield(
                     icon: Icon(
-                      controller.user?.gender == "Laki-Laki"
-                          ? Icons.male
-                          : Icons.female,
+                      Icons.description,
                       color: primaryColor(context),
                     ),
                     isReadOnly: true,
-                    initValue: controller.user?.gender,
+                    initValue: controller.user?.bio,
                     label: "Gender",
                   ),
                   16.height,
@@ -114,16 +112,6 @@ class UsersDetailView extends GetView<UsersDetailController> {
               16.height,
               PPCardColumn(
                 children: [
-                  PPTextfield(
-                    icon: Icon(
-                      Icons.school,
-                      color: primaryColor(context),
-                    ),
-                    isReadOnly: true,
-                    initValue: controller.user?.sekolah,
-                    label: "Asal Sekolah",
-                  ),
-                  16.height,
                   PPTextfield(
                     isReadOnly: true,
                     icon: Icon(

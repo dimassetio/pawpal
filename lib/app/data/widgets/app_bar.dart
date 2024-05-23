@@ -7,6 +7,7 @@ class PPAppBar extends StatelessWidget {
     super.key,
     required this.title,
     this.trailingIcon,
+    this.trailingWidget,
     this.onBack,
     this.trailingFunction,
     this.titleWidget,
@@ -16,6 +17,7 @@ class PPAppBar extends StatelessWidget {
   final void Function()? onBack;
   final void Function()? trailingFunction;
   final Icon? trailingIcon;
+  final Widget? trailingWidget;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -44,13 +46,14 @@ class PPAppBar extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           color: clrLightGrey,
           margin: EdgeInsets.zero,
-          child: IconButton(
-            onPressed: trailingFunction ?? () {},
-            icon: trailingIcon ??
-                Icon(
-                  Icons.more_horiz_rounded,
-                ),
-          ),
+          child: trailingWidget ??
+              IconButton(
+                onPressed: trailingFunction,
+                icon: trailingIcon ??
+                    Icon(
+                      Icons.more_horiz_rounded,
+                    ),
+              ),
         ),
       ],
     );

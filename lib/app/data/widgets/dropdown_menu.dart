@@ -6,7 +6,6 @@ class PPDropdown extends StatelessWidget {
   PPDropdown({
     required this.listValue,
     required this.onChanged,
-    this.valueAsTitle = true,
     this.isValidationRequired = true,
     this.isEnabled = true,
     this.isReadOnly = false,
@@ -24,7 +23,6 @@ class PPDropdown extends StatelessWidget {
     this.validator,
   });
   final List listValue;
-  final bool valueAsTitle;
   final bool isValidationRequired;
   final bool isEnabled;
   final bool isReadOnly;
@@ -32,25 +30,25 @@ class PPDropdown extends StatelessWidget {
   final Icon? icon;
   final bool isBordered;
   final String? label;
-  final String? initValue;
+  final dynamic initValue;
   final String? hint;
   final Color? suffixColor;
   final int? maxLine;
   final double? borderRadius;
   final Widget? suffixIcon;
-  final String? Function(String?)? validator;
+  final String? Function(dynamic)? validator;
   final String Function(dynamic)? titleFunction;
-  final void Function(String?)? onChanged;
+  final void Function(dynamic)? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
+    return DropdownButtonFormField<dynamic>(
       items: List.generate(
           listValue.length,
           (index) => DropdownMenuItem(
                 value: listValue[index],
                 child: Text(
-                    "${valueAsTitle ? listValue[index] : titleFunction!(listValue[index])}"),
+                    "${titleFunction == null ? listValue[index] : titleFunction!(listValue[index])}"),
               )),
       onChanged: isEnabled ? onChanged : null,
       decoration: InputDecoration(
@@ -68,7 +66,10 @@ class PPDropdown extends StatelessWidget {
       value: initValue,
       validator: validator ??
           (isValidationRequired
-              ? (value) => value.isEmptyOrNull ? "This field is required" : null
+              ? (value) =>
+                  (value is String ? value.isEmptyOrNull : value == null)
+                      ? "This field is required"
+                      : null
               : null),
     );
   }

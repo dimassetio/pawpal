@@ -15,9 +15,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   var authController = Get.put(AuthController(), permanent: true);
+
   runApp(
     GetMaterialApp(
-      title: "Godsseo-App",
+      title: "PawPal",
       debugShowCheckedModeBanner: false,
       initialRoute: authController.isLoggedIn
           ? authC.user.hasRole(Role.administrator)

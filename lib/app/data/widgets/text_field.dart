@@ -24,6 +24,9 @@ class PPTextfield extends StatelessWidget {
     this.validator,
     this.onTap,
     this.padding,
+    this.focus,
+    this.inputAction,
+    this.onSubmit,
     this.fillColor,
   });
   final TextFieldType textFieldType;
@@ -46,6 +49,9 @@ class PPTextfield extends StatelessWidget {
   final String? Function(String?)? validator;
   final EdgeInsetsGeometry? padding;
   final Color? fillColor;
+  final FocusNode? focus;
+  final TextInputAction? inputAction;
+  final dynamic Function(String)? onSubmit;
   final void Function()? onTap;
 
   @override
@@ -53,8 +59,11 @@ class PPTextfield extends StatelessWidget {
     return AppTextField(
       onTap: onTap,
       controller: controller,
+      focus: focus,
       isValidationRequired: isValidationRequired,
       maxLines: maxLine,
+      textInputAction: inputAction,
+      onFieldSubmitted: onSubmit,
       inputFormatters: inputFormatters ??
           ((digitsOnly ?? false)
               ? [FilteringTextInputFormatter.digitsOnly]

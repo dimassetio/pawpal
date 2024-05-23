@@ -14,6 +14,7 @@ class PPDialog extends StatelessWidget {
     this.image,
     this.confirmText,
     this.negativeText,
+    this.widget,
     this.onConfirm,
     this.onNegative,
   });
@@ -23,6 +24,7 @@ class PPDialog extends StatelessWidget {
   final String? image;
   final String? confirmText;
   final String? negativeText;
+  final Widget? widget;
   final void Function()? onConfirm;
   final void Function()? onNegative;
 
@@ -47,10 +49,11 @@ class PPDialog extends StatelessWidget {
                   ?.copyWith(color: primaryColor(context)),
             ),
             8.height,
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-            ),
+            widget ??
+                Text(
+                  subtitle,
+                  textAlign: TextAlign.center,
+                ),
             16.height,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

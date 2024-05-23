@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawpal/app/data/helpers/assets.dart';
 import 'package:pawpal/app/data/helpers/themes.dart';
+import 'package:pawpal/app/data/models/chats_model.dart';
 import 'package:pawpal/app/data/widgets/app_bar.dart';
 import 'package:pawpal/app/data/widgets/bottom_bar.dart';
 import 'package:pawpal/app/data/widgets/main_container.dart';
@@ -24,83 +26,64 @@ class ChatsView extends GetView<ChatsController> {
         children: [
           PPAppBar(title: "Chats"),
           16.height,
-          PPTextfield(
-            icon: Icon(Icons.search),
-            isBordered: true,
-            label: "Search names",
+          Obx(
+            () => PPTextfield(
+              icon: Icon(Icons.search),
+              isBordered: true,
+              label: "Search names",
+              controller: controller.searchC,
+              suffixIcon: controller.searchV.isNotEmpty
+                  ? IconButton(
+                      onPressed: () {
+                        controller.searchC.clear();
+                        FocusScope.of(context).unfocus();
+                      },
+                      icon: Icon(Icons.clear))
+                  : null,
+            ),
           ),
           16.height,
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.only(right: 16),
-                width: 72,
-                child: Column(
-                  children: [
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(36),
-                        color: clrLightGrey,
-                        border:
-                            Border.all(color: primaryColor(context), width: 2),
-                      ),
-                      child: Icon(
-                        Icons.add_rounded,
-                        size: 48,
-                        color: primaryColor(context),
-                      ),
-                    ),
-                    8.height,
-                    Text(
-                      "Add New",
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 16),
-                width: 72,
-                child: Column(
-                  children: [
-                    Container(
-                        width: 64,
-                        height: 64,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(36),
-                          color: clrLightGrey,
-                          border: Border.all(
-                              color: primaryColor(context), width: 2),
-                        ),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(36),
-                            child: Image.asset(img_logo))),
-                    8.height,
-                    Text(
-                      "Person Name",
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Divider(
-            height: 20,
-          ),
-          PPChatCard(),
-          Divider(
-            height: 10,
-            thickness: 1,
-          ),
-          PPChatCard(),
-          Divider(
-            height: 10,
-            thickness: 1,
+          Obx(
+            () => controller.isLoading
+                ? LinearProgressIndicator()
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemCount: controller.chats.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          FutureBuilder<ChatsModel>(
+                              future: controller.loadChat(index),
+                              builder: (context, snapshot) {
+                                return Obx(() {
+                                  if (controller.searchV.isNotEmpty) {
+                                    if (!((snapshot.data ??
+                                                controller.chats[index])
+                                            .receiver
+                                            ?.username
+                                            ?.toLowerCase()
+                                            .contains(controller.searchV
+                                                .toLowerCase()) ??
+                                        false)) {
+                                      return SizedBox();
+                                    }
+                                  }
+
+                                  return PPChatCard(
+                                      isLoading: snapshot.connectionState ==
+                                          ConnectionState.waiting,
+                                      chat: snapshot.data ??
+                                          controller.chats[index]);
+                                });
+                              }),
+                          Divider(
+                            height: 10,
+                            thickness: 1,
+                          ),
+                        ],
+                      );
+                    }),
           ),
         ],
       ),
@@ -110,33 +93,60 @@ class ChatsView extends GetView<ChatsController> {
 }
 
 class PPChatCard extends StatelessWidget {
-  const PPChatCard({
+  PPChatCard({
     super.key,
+    this.isLoading = false,
+    required this.chat,
   });
+
+  final ChatsModel chat;
+  final bool isLoading;
+  final unreadCount = 0.obs;
 
   @override
   Widget build(BuildContext context) {
+    unreadCount.value = chat.unreadCount ?? 0;
     return ListTile(
       leading: CircleAvatar(
+        foregroundImage: (chat.receiver?.foto.isEmptyOrNull ?? true)
+            ? null
+            : CachedNetworkImageProvider(chat.receiver!.foto!),
         backgroundImage: AssetImage(img_logo),
         radius: 32,
       ),
       contentPadding: EdgeInsets.zero,
-      title: Text("Person Name"),
-      subtitle: Text("Preview messages"),
-      trailing: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        decoration: BoxDecoration(
-            color: primaryColor(context),
-            borderRadius: BorderRadius.circular(32)),
-        child: Text(
-          "3",
-          style: textTheme(context).labelMedium?.copyWith(color: clr_white),
-        ),
+      title: isLoading
+          ? LinearProgressIndicator(
+              color: textColor,
+            )
+          : Text(chat.receiver?.username ?? "Person Name"),
+      subtitle: isLoading
+          ? LinearProgressIndicator(
+              color: textSecondaryColor,
+            )
+          : Text((chat.messages?.isEmpty ?? true)
+              ? "Preview messages"
+              : chat.messages?.first.text ?? ''),
+      trailing: Obx(
+        () => unreadCount.value > 0
+            ? Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                    color: primaryColor(context),
+                    borderRadius: BorderRadius.circular(32)),
+                child: Text(
+                  "${unreadCount.value}",
+                  style: textTheme(context)
+                      .labelMedium
+                      ?.copyWith(color: clr_white),
+                ),
+              )
+            : SizedBox(),
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       onTap: () {
-        Get.toNamed(Routes.CHATS_SHOW);
+        unreadCount.value = 0;
+        Get.toNamed(Routes.CHATS_SHOW, arguments: chat);
       },
     );
   }

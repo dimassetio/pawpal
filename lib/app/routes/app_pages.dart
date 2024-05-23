@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:pawpal/app/data/widgets/page_not_found.dart';
 
+import '../data/widgets/page_not_found.dart';
 import '../modules/adoption/bindings/adoption_binding.dart';
 import '../modules/adoption/views/adoption_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
@@ -13,6 +13,10 @@ import '../modules/auth/sign_in/views/auth_sign_in_view.dart';
 import '../modules/auth/sign_up/bindings/auth_sign_up_binding.dart';
 import '../modules/auth/sign_up/views/auth_sign_up_view.dart';
 import '../modules/auth/views/auth_view.dart';
+import '../modules/carousel/bindings/carousel_binding.dart';
+import '../modules/carousel/form/bindings/carousel_form_binding.dart';
+import '../modules/carousel/form/views/carousel_form_view.dart';
+import '../modules/carousel/views/carousel_view.dart';
 import '../modules/chats/bindings/chats_binding.dart';
 import '../modules/chats/show/bindings/chats_show_binding.dart';
 import '../modules/chats/show/views/chats_show_view.dart';
@@ -93,6 +97,7 @@ class AppPages {
           name: _Paths.FORM,
           page: () => const UsersFormView(),
           binding: UsersFormBinding(),
+          children: [],
         ),
         GetPage(
           name: _Paths.DETAIL,
@@ -134,5 +139,16 @@ class AppPages {
         ),
       ],
     ),
+    GetPage(
+        name: _Paths.CAROUSEL,
+        page: () => const CarouselView(),
+        binding: CarouselBinding(),
+        children: [
+          GetPage(
+            name: _Paths.FORM,
+            page: () => const CarouselFormView(),
+            binding: CarouselFormBinding(),
+          ),
+        ]),
   ];
 }

@@ -20,6 +20,8 @@ abstract class Routes {
   static const CHATS_SHOW = _Paths.CHATS + _Paths.SHOW;
   static const PET_SHOW = _Paths.PET + _Paths.SHOW;
   static const PET_FORM = _Paths.PET + _Paths.FORM;
+  static const CAROUSEL = _Paths.CAROUSEL;
+  static const CAROUSEL_FORM = _Paths.CAROUSEL + _Paths.FORM;
 }
 
 abstract class _Paths {
@@ -39,4 +41,5 @@ abstract class _Paths {
   static const CHATS = '/chats';
   static const SHOW = '/show';
   static const PET = '/pet';
+  static const CAROUSEL = '/carousel';
 }

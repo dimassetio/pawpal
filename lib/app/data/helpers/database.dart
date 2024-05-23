@@ -10,6 +10,11 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
 
 const userCollection = "users";
+const chatsCollection = "chats";
+const adoptionsCollection = "adoptions";
+const bannersCollection = "banners";
+const messageCollection = "message";
+const petCollection = "pets";
 
 class Database {
   CollectionReference collectionReference;
@@ -93,7 +98,7 @@ class Database {
     }
   }
 
-  Query<Map<String, dynamic>> collectionGroup(String collectionPath) {
+  static Query<Map<String, dynamic>> collectionGroup(String collectionPath) {
     return firestore.collectionGroup(collectionPath);
   }
 }
